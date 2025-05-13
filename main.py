@@ -2,11 +2,13 @@ import time
 import requests
 from datetime import datetime
 import smtplib
+import os
 
-MY_LAT = -45.2008
-MY_LONG = 92.2545
-MY_EMAIL = "nastianekrotiuk@gmail.com"
-PASSWORD = "makg rlmq fnle vmqp"
+MY_LAT = 41.5365
+MY_LONG = 49.8937
+MY_EMAIL = os.getenv('MY_EMAIL')
+PASSWORD = os.getenv('PASSWORD')
+RECIPIENT_EMAIL = os.getenv('RECIPIENT_EMAIL')
 
 
 def is_iss_overhead():
@@ -20,6 +22,7 @@ def is_iss_overhead():
     if (MY_LAT - 5 <= iss_latitude <= MY_LAT + 5
             and MY_LONG - 5 <= iss_longitude <= MY_LONG + 5):
         return True
+    return False
 
 
 def is_night():
@@ -50,5 +53,5 @@ while True:
             connection.starttls()
             connection.login(user=MY_EMAIL, password=PASSWORD)
             connection.sendmail(from_addr=MY_EMAIL,
-                                to_addrs="tea.with.a.condensed.milk@gmail.com",
+                                to_addrs=RECIPIENT_EMAIL,
                                 msg="Subject:ISS Tracker\n\nLook up to the sky! The ISS is above you in the sky!")
